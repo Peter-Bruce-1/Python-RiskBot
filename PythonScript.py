@@ -61,10 +61,28 @@ def GET_fortifyCandidates(_Tiles,_graph,_from):
     return _return
 
 
+def placeCapitalLogic(_tile_data):
 
+    print("called placeCapitalLogic")
+    _Tiles = parseTileData(_tile_data)
+
+    _my_Tiles = [x for x in _Tiles if x.team_id == 0]
+
+    if len(_my_Tiles) > 0:
+        _random = random.choice(_my_Tiles)
+        print("Capital Placement,{}".format(_random.id))
+        return
+    
+    print("Capital Placement,-1")
+    return
+
+def tradeLogic(_tile_data):
+    print("Force Trade In,-1")
+    return
 
 def deployLogic(_tile_data,_graph_string):
-    
+
+    print("called deployLogic")
     
     _Tiles = parseTileData(_tile_data)
     _parsed_graph = parseGraphString(_graph_string)
@@ -81,7 +99,7 @@ def deployLogic(_tile_data,_graph_string):
     else:
         _random_Tile = random.choice(_my_Tiles)
 
-    print("{0},1".format(_random_Tile.id))
+    print("Deploy,{0},1".format(_random_Tile.id))
     return
 
     
@@ -90,6 +108,7 @@ def deployLogic(_tile_data,_graph_string):
 
 def attackLogic(_tile_data,_graph_string):
 
+    print("called attackLogic")
     
     _parsed_graph = parseGraphString(_graph_string)
     _Tiles = parseTileData(_tile_data)
@@ -98,7 +117,7 @@ def attackLogic(_tile_data,_graph_string):
     _attack_start_candidates = [x for x in _Tiles if x.team_id == 0 and x.n_troops > 1 and len(GET_attackCandidates(_Tiles,_parsed_graph,x)) > 0]
 
     if len(_attack_start_candidates) <= 0:
-        print(-1)
+        print("Attack,-1")
         return
 
     #select a random tile...
@@ -113,7 +132,7 @@ def attackLogic(_tile_data,_graph_string):
     _attack_target = random.choice(_attack_target_candidates)
     _n_troops = _random_Tile.n_troops - 1
 
-    print("{0},{1},{2}".format(_random_Tile.id,_attack_target.id,_n_troops))
+    print("Attack,{0},{1},{2}".format(_random_Tile.id,_attack_target.id,_n_troops))
     return
 
     
@@ -123,9 +142,10 @@ def attackLogic(_tile_data,_graph_string):
     
     print(-1)
     return
-    print(_parsed_graph)
 
 def fortifyLogic(_game_state,_graph_string):
+
+    print("called fortifyLogic")
 
     _Tiles = parseTileData(_game_state)
     
@@ -151,18 +171,19 @@ def fortifyLogic(_game_state,_graph_string):
             for _target in _fortify_target_candidates:
                 if len(GET_attackCandidates(_Tiles,_parsed_graph,_target)) > 0:
                     #fortify to that tile
-                    print("{0},{1},{2}".format(_good_start_candidate.id,_target.id,_good_start_candidate.n_troops - 1))
+                    print("Fortify,{0},{1},{2}".format(_good_start_candidate.id,_target.id,_good_start_candidate.n_troops - 1))
                     return
 
         
         #work out which tiles it can fortify to...
-    print(-1)
+    print("Fortify",-1)
     return
 
     
 
 def captureLogic(_game_state,_graph_string):
-    print("1")#capture with 1 troops...
+    print("called captureLogic")
+    print("Capture,1")#capture with 1 troops...
     return
 
 
@@ -171,22 +192,29 @@ def captureLogic(_game_state,_graph_string):
 if __name__ == "__main__":
     
     
-    func = sys.argv[1]
-    _tile_data = sys.argv[2]
-    _graph = sys.argv[3]
+    _turn_state = sys.argv[1]
+    _n_cards = sys.argv[2]
+    _n_deployable_troops = sys.argv[3]
+    _tile_data = sys.argv[4]
+    _graph = sys.argv[5]
     
+    if _turn_state == "Force Trade In":
+        tradeLogic(_tile_data)
 
-    if func == "deploy":
+    elif _turn_state == "Capital Placement":
+        placeCapitalLogic(_tile_data)
+        
+    elif _turn_state == "Deploy":
         deployLogic(_tile_data,_graph)
         
-    elif func == "attack":
+    elif _turn_state == "Attack":
         attackLogic(_tile_data,_graph)
 
-    elif func == "fortify":
+    elif _turn_state == "Fortify":
         fortifyLogic(_tile_data,_graph)
 
-    elif func == "capture":
+    elif _turn_state == "Capture":
         captureLogic(_tile_data,_graph)
     
     else:
-        print("Unknown function")
+        print("Unknown turn state")
