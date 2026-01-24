@@ -3,12 +3,12 @@ import random
 from HelperFunctions import parseTileData,parseGraphString,GET_attackCandidates,GET_fortifyCandidates,Tile
 
 
-def placeCapitalLogic(_tile_data):
+def placeCapitalLogic(_tile_data,_my_team_id):
 
     print("called placeCapitalLogic")
     _Tiles = parseTileData(_tile_data)
 
-    _my_Tiles = [x for x in _Tiles if x.team_id == 0]
+    _my_Tiles = [x for x in _Tiles if x.team_id == _my_team_id]
 
     if len(_my_Tiles) > 0:
         _random = random.choice(_my_Tiles)
@@ -22,7 +22,7 @@ def tradeLogic(_tile_data):
     print("Force Trade In,-1")
     return
 
-def deployLogic(_tile_data,_graph_string):
+def deployLogic(_tile_data,_graph_string,_my_team_id):
 
     print("called deployLogic")
     
@@ -30,7 +30,7 @@ def deployLogic(_tile_data,_graph_string):
     _parsed_graph = parseGraphString(_graph_string)
     
 
-    _my_Tiles = [x for x in _Tiles if x.team_id == 0]
+    _my_Tiles = [x for x in _Tiles if x.team_id == _my_team_id]
     
 
     _good_candidates = [x for x in _my_Tiles if len(GET_attackCandidates(_Tiles,_parsed_graph,x)) > 0]
@@ -118,7 +118,7 @@ def fortifyLogic(_game_state,_graph_string,_my_team_id):
 
         
         #work out which tiles it can fortify to...
-    print("Fortify",-1)
+    print("Fortify,-1")
     return
 
     
@@ -134,7 +134,7 @@ def captureLogic(_game_state,_graph_string):
 if __name__ == "__main__":
     
 
-    _team_id = int(sys.argv[1])#which teams turn is it 0,1,2,3,4 etc....
+    _team_id = int(sys.argv[1])#which teams am I currently playing as
     _turn_state = sys.argv[2]
     _n_cards = sys.argv[3]
     _n_deployable_troops = sys.argv[4]
@@ -145,10 +145,10 @@ if __name__ == "__main__":
         tradeLogic(_tile_data)
 
     elif _turn_state == "Capital Placement":
-        placeCapitalLogic(_tile_data)
+        placeCapitalLogic(_tile_data,_team_id)
         
     elif _turn_state == "Deploy":
-        deployLogic(_tile_data,_graph)
+        deployLogic(_tile_data,_graph,_team_id)
         
     elif _turn_state == "Attack":
         attackLogic(_tile_data,_graph,_team_id)
