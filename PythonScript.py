@@ -1,64 +1,6 @@
 import sys
 import random
-
-
-class Tile:
-
-    CACHE_GET_Tile = {}
-    def __init__(self,_string):
-        
-        self.id = int(_string.split(":")[0])
-        self.team_id = int(_string.split(":")[1].split(".")[0])
-        self.n_troops = int(_string.split(":")[1].split(".")[1])
-
-        Tile.CACHE_GET_Tile[self.id] = self
-
-    def GET_Tile(_id):
-
-        if _id in Tile.CACHE_GET_Tile:
-            return Tile.CACHE_GET_Tile[_id]
-        return None
-        
-
-        
-
-def parseTileData(_godot_output):
-
-    #parse godots output into something a bit more useful
-    
-
-    _Tiles = []
-
-    for _tile_data in _godot_output.split(","):
-        if _tile_data == "":
-            continue
-        _Tiles.append(Tile(_tile_data))
-        
-    return _Tiles
-    
-def parseGraphString(_string):
-
-    _graph = {}
-    for _tile_data in _string.split("|"):
-        
-        _graph[int(_tile_data.split(":")[0])] = [int(x) for x in _tile_data.split(":")[1].split(",")]
-        
-    
-    return _graph
-
-
-
-
-def GET_attackCandidates(_Tiles,_graph,_from):
-
-    _attack_candidates = [Tile.GET_Tile(x) for x in _graph[_from.id] if Tile.GET_Tile(x).team_id != _from.team_id]
-
-    return _attack_candidates
-
-#return a list of all the tiles 'from' can fortify to...
-def GET_fortifyCandidates(_Tiles,_graph,_from):
-    _return = [Tile.GET_Tile(x) for x in _graph[_from.id] if Tile.GET_Tile(x).team_id == _from.team_id]
-    return _return
+from HelperFunctions import parseTileData,parseGraphString,GET_attackCandidates,GET_fortifyCandidates,Tile
 
 
 def placeCapitalLogic(_tile_data):
@@ -191,12 +133,13 @@ def captureLogic(_game_state,_graph_string):
 
 if __name__ == "__main__":
     
-    
-    _turn_state = sys.argv[1]
-    _n_cards = sys.argv[2]
-    _n_deployable_troops = sys.argv[3]
-    _tile_data = sys.argv[4]
-    _graph = sys.argv[5]
+
+    _team_id = sys.argv[1]#which teams turn is it 0,1,2,3,4 etc....
+    _turn_state = sys.argv[2]
+    _n_cards = sys.argv[3]
+    _n_deployable_troops = sys.argv[4]
+    _tile_data = sys.argv[5]
+    _graph = sys.argv[6]
     
     if _turn_state == "Force Trade In":
         tradeLogic(_tile_data)
