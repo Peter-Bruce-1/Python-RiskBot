@@ -48,7 +48,7 @@ def deployLogic(_tile_data,_graph_string):
    
     
 
-def attackLogic(_tile_data,_graph_string):
+def attackLogic(_tile_data,_graph_string,_my_team_id):
 
     print("called attackLogic")
     
@@ -56,7 +56,7 @@ def attackLogic(_tile_data,_graph_string):
     _Tiles = parseTileData(_tile_data)
 
 
-    _attack_start_candidates = [x for x in _Tiles if x.team_id == 0 and x.n_troops > 1 and len(GET_attackCandidates(_Tiles,_parsed_graph,x)) > 0]
+    _attack_start_candidates = [x for x in _Tiles if x.team_id == _my_team_id and x.n_troops > 1 and len(GET_attackCandidates(_Tiles,_parsed_graph,x)) > 0]
 
     if len(_attack_start_candidates) <= 0:
         print("Attack,-1")
@@ -65,7 +65,7 @@ def attackLogic(_tile_data,_graph_string):
     #select a random tile...
     _random_Tile = random.choice(_attack_start_candidates)
     #get all the tiles it can attack...
-    _attack_target_candidates = [Tile.GET_Tile(x) for x in _parsed_graph[_random_Tile.id] if Tile.GET_Tile(x).team_id != 0]
+    _attack_target_candidates = [Tile.GET_Tile(x) for x in _parsed_graph[_random_Tile.id] if Tile.GET_Tile(x).team_id != _my_team_id]
 
     if len(_attack_target_candidates) <= 0:
         print(-1)
@@ -85,7 +85,7 @@ def attackLogic(_tile_data,_graph_string):
     print(-1)
     return
 
-def fortifyLogic(_game_state,_graph_string):
+def fortifyLogic(_game_state,_graph_string,_my_team_id):
 
     print("called fortifyLogic")
 
@@ -95,7 +95,7 @@ def fortifyLogic(_game_state,_graph_string):
     
 
     #ok rank the tiles by order of n troops
-    _good_start_candidates = [x for x in _Tiles if x.team_id == 0 and x.n_troops > 1 and len(GET_attackCandidates(_Tiles,_parsed_graph,x)) == 0]
+    _good_start_candidates = [x for x in _Tiles if x.team_id == _my_team_id and x.n_troops > 1 and len(GET_attackCandidates(_Tiles,_parsed_graph,x)) == 0]
     
     
 
@@ -134,7 +134,7 @@ def captureLogic(_game_state,_graph_string):
 if __name__ == "__main__":
     
 
-    _team_id = sys.argv[1]#which teams turn is it 0,1,2,3,4 etc....
+    _team_id = int(sys.argv[1])#which teams turn is it 0,1,2,3,4 etc....
     _turn_state = sys.argv[2]
     _n_cards = sys.argv[3]
     _n_deployable_troops = sys.argv[4]
@@ -151,10 +151,10 @@ if __name__ == "__main__":
         deployLogic(_tile_data,_graph)
         
     elif _turn_state == "Attack":
-        attackLogic(_tile_data,_graph)
+        attackLogic(_tile_data,_graph,_team_id)
 
     elif _turn_state == "Fortify":
-        fortifyLogic(_tile_data,_graph)
+        fortifyLogic(_tile_data,_graph,_team_id)
 
     elif _turn_state == "Capture":
         captureLogic(_tile_data,_graph)
