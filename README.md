@@ -19,6 +19,8 @@ step4:
 exit the pythonManager UI and go to server browser -> join the server -> go to lobby -> join a team -> start the game.
 you should now see the PythonScript "playing" the game
 
+please let me know if this didn't work for you or if any steps dont make sense/could be explained better?
+
 
 step5:
 start developing your bot (more instructions to follow and I reccomend using HelperFunctions.py where possible.)
