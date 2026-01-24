@@ -1,10 +1,10 @@
 Step1:
-download SBMFR from steam https://store.steampowered.com/app/3297420/SBMFR/ or itch.io https://peter-bruce-1.itch.io/sbmfr-godot?secret=TDfkV5OQGXL79oQRFvbwuQDlBYE (I recommend installing the itch.io app so the game will be updated automatically for you)
+download and launch SBMFR from steam https://store.steampowered.com/app/3297420/SBMFR/ or itch.io https://peter-bruce-1.itch.io/sbmfr-godot?secret=TDfkV5OQGXL79oQRFvbwuQDlBYE (I recommend installing the itch.io app so the game will be updated automatically for you)
 
 
 
 Step2:
-Clone this repository somewhere on your machine
+Clone this repository somewhere on your machine (NOTE - you may need to "allow access" to this location or you could put it into the default folder (see PythonManagerUI))
 
 
 
