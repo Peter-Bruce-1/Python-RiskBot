@@ -20,6 +20,7 @@ exit the pythonManager UI and go to server browser -> join the server -> go to l
 you should now see the PythonScript "playing" the game
 
 please let me know if this didn't work for you or if any steps dont make sense/could be explained better?
+to view your python script output you can press the ` key to view a console which will say what the pythonmanager is (hopefully) doing
 
 
 step5:
